@@ -1,0 +1,21 @@
+services:
+  app:
+    image: php:8.0-apache
+    container_name: php_apache
+    ports:
+      - "8080:80"
+      - "9004:9003"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/apache:/etc/apache2/sites-available
+    working_dir: /var/www/html
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+    command: >
+      bash -c "a2enmod rewrite && apache2-foreground"
+    restart: always
+    networks:
+      - app-network
+networks:
+  app-network:
+      driver: bridge
